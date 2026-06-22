@@ -10,6 +10,12 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
 const FeaturedCarousel = ({ items, onCardClick, onPlayClick }) => {
+  const swiperRef = React.useRef(null);
+
+  if (!items || items.length === 0) {
+    return null;
+  }
+
   return (
     <div className="relative w-full py-16 px-6 overflow-hidden bg-background/50">
       {/* Decorative Neon Blurs */}
@@ -25,11 +31,14 @@ const FeaturedCarousel = ({ items, onCardClick, onPlayClick }) => {
         </div>
 
         <Swiper
+          onSwiper={(swiper) => {
+            swiperRef.current = swiper;
+          }}
           effect={'coverflow'}
           grabCursor={true}
           centeredSlides={true}
           slidesPerView={'auto'}
-          loop={true}
+          loop={items.length > 5}
           coverflowEffect={{
             rotate: 25,
             stretch: 0,
@@ -38,8 +47,9 @@ const FeaturedCarousel = ({ items, onCardClick, onPlayClick }) => {
             slideShadows: false,
           }}
           autoplay={{
-            delay: 4500,
+            delay: 3000,
             disableOnInteraction: false,
+            pauseOnMouseEnter: true,
           }}
           pagination={{ clickable: true }}
           modules={[EffectCoverflow, Autoplay, Pagination, Navigation]}
@@ -56,8 +66,16 @@ const FeaturedCarousel = ({ items, onCardClick, onPlayClick }) => {
             }
           }}
         >
-          {items.map((item) => (
-            <SwiperSlide key={item.id} className="relative w-[340px] md:w-[420px] aspect-[16/10] rounded-2xl overflow-hidden glassmorphism border border-white/10 group cursor-pointer">
+          {items.map((item, index) => (
+            <SwiperSlide
+              key={item.id}
+              onMouseEnter={() => {
+                if (swiperRef.current) {
+                  swiperRef.current.slideToLoop(index);
+                }
+              }}
+              className="relative w-[340px] md:w-[420px] aspect-[16/10] rounded-2xl overflow-hidden glassmorphism border border-white/10 group cursor-pointer"
+            >
               {/* Cover Image */}
               <img
                 src={item.backdropUrl}

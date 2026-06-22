@@ -5,19 +5,32 @@ const Preloader = ({ onComplete }) => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    const handleLoad = () => {
+      setProgress(100);
+    };
+
+    if (document.readyState === 'complete') {
+      setProgress(100);
+    } else {
+      window.addEventListener('load', handleLoad);
+    }
+
     const timer = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(timer);
-          setTimeout(onComplete, 600); // Small buffer for exit animation
+          setTimeout(onComplete, 200); // Super fast exit transition
           return 100;
         }
-        // Increment progress randomly for organic feel
-        return prev + Math.floor(Math.random() * 8) + 2;
+        // Much faster increments for instant feel
+        return prev + Math.floor(Math.random() * 15) + 6;
       });
-    }, 40);
+    }, 20); // Faster checks (20ms instead of 40ms)
 
-    return () => clearInterval(timer);
+    return () => {
+      window.removeEventListener('load', handleLoad);
+      clearInterval(timer);
+    };
   }, [onComplete]);
 
   return (
@@ -44,7 +57,7 @@ const Preloader = ({ onComplete }) => {
           animate={{ letterSpacing: '0.25em', opacity: 1 }}
           transition={{ duration: 1.5, ease: 'easeOut' }}
         >
-          VIETPLAY
+          2HT ENTERTAINMENT
         </motion.h1>
 
         {/* Cinematic Subtitle */}

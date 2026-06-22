@@ -49,7 +49,7 @@ const DetailsModal = ({
               <iframe
                 key={item.id}
                 className="w-full h-full object-cover scale-[1.3] pointer-events-none"
-                src={`https://www.youtube.com/embed/${ytId}?autoplay=1&mute=1&playlist=${ytId}&loop=1&controls=0&modestbranding=1&rel=0&showinfo=0&enablejsapi=1`}
+                src={`https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&mute=1&playlist=${ytId}&loop=1&controls=0&modestbranding=1&rel=0&showinfo=0&enablejsapi=1`}
                 title={item.title}
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

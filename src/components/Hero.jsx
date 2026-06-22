@@ -24,7 +24,7 @@ const Hero = ({ activeMovie, onPlayClick, onDetailsClick, isMuted, setIsMuted })
           <iframe
             key={activeMovie.id}
             className="w-full h-full object-cover scale-[1.3] pointer-events-none aspect-video"
-            src={`https://www.youtube.com/embed/${ytId}?autoplay=1&mute=${isMuted ? 1 : 0}&playlist=${ytId}&loop=1&controls=0&modestbranding=1&rel=0&showinfo=0&enablejsapi=1`}
+            src={`https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&mute=${isMuted ? 1 : 0}&playlist=${ytId}&loop=1&controls=0&modestbranding=1&rel=0&showinfo=0&enablejsapi=1`}
             title={activeMovie.title}
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

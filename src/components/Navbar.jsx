@@ -9,7 +9,8 @@ const Navbar = ({
   setSearchQuery, 
   showBookmarksOnly, 
   setShowBookmarksOnly,
-  bookmarkCount
+  bookmarkCount,
+  onAiClick
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -17,13 +18,22 @@ const Navbar = ({
     <nav className="sticky top-0 left-0 w-full z-40 backdrop-blur-xl border-b border-white/5 bg-background/50 transition-all duration-300">
       <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
         {/* Left Side: Brand Logo */}
-        <div className="flex items-center space-x-2 cursor-pointer group">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary to-accentPink flex items-center justify-center shadow-glow-primary group-hover:scale-105 transition-transform duration-300">
-            <Sparkles className="w-5 h-5 text-white animate-pulse" />
+        <div className="flex items-center space-x-3 cursor-pointer group">
+          <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-primary via-accentPink to-accentCyan flex items-center justify-center shadow-glow-primary group-hover:scale-105 transition-transform duration-300 relative overflow-hidden">
+            <div className="absolute inset-[1px] bg-[#0b0b10] rounded-[15px] flex items-center justify-center">
+              <span className="text-transparent bg-clip-text bg-gradient-to-tr from-primary via-accentPink to-accentCyan font-black text-sm tracking-tighter">
+                2HT
+              </span>
+            </div>
           </div>
-          <span className="text-2xl font-cinematic font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-textPrimary via-primary to-accentCyan">
-            VIETPLAY
-          </span>
+          <div className="flex flex-col">
+            <span className="text-lg font-cinematic font-black tracking-widest text-white leading-none">
+              2HT
+            </span>
+            <span className="text-[8px] font-bold tracking-[0.3em] text-accentCyan uppercase leading-none mt-1">
+              ENTERTAINMENT
+            </span>
+          </div>
         </div>
 
         {/* Center: Main Desktop Navigation (Categories) */}
@@ -63,6 +73,15 @@ const Navbar = ({
             />
           </div>
 
+          {/* AI Refresh Button */}
+          <button
+            onClick={onAiClick}
+            className="p-2.5 bg-gradient-to-tr from-primary via-accentPink to-accentCyan hover:shadow-glow-primary text-white rounded-full transition-all duration-300 border border-white/10 flex items-center justify-center group/ai"
+            title="Cập nhật phim & nhạc mới bằng Gemini AI"
+          >
+            <Sparkles className="w-5 h-5 group-hover/ai:rotate-12 transition-transform duration-300" />
+          </button>
+
           {/* Bookmarks Toggle button */}
           <button
             onClick={() => setShowBookmarksOnly(!showBookmarksOnly)}
@@ -98,6 +117,14 @@ const Navbar = ({
                 {bookmarkCount}
               </span>
             )}
+          </button>
+          
+          <button
+            onClick={onAiClick}
+            className="p-2 bg-gradient-to-tr from-primary via-accentPink to-accentCyan text-white rounded-full border border-white/10"
+            title="Cập nhật phim & nhạc mới bằng Gemini AI"
+          >
+            <Sparkles className="w-4 h-4 animate-pulse" />
           </button>
           
           <button
