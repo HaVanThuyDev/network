@@ -41,7 +41,7 @@ Chú ý quan trọng để tránh lỗi giao diện và trùng lặp:
   const controller = new AbortController();
   const timeoutId = setTimeout(() => {
     controller.abort();
-  }, 6000); // 6 seconds timeout
+  }, 12000); // 12 seconds timeout
 
   try {
     const response = await fetch(
@@ -101,13 +101,20 @@ Chú ý quan trọng để tránh lỗi giao diện và trùng lặp:
   }
 };
 
-export const askGeminiChat = async (message, history, apiKey) => {
+export const askGeminiChat = async (message, history, apiKey, mediaList = []) => {
   if (!apiKey) {
     throw new Error("Vui lòng cung cấp Gemini API Key trong phần cấu hình AI.");
   }
 
+  const mediaContext = mediaList.length > 0 
+    ? `\nDưới đây là danh sách tác phẩm đang hiển thị và nổi bật trên trang chủ 2HT ENTERTAINMENT hiện tại (Cập nhật mới nhất năm 2026):\n` + 
+      mediaList.map(item => `- [${item.category}] Tên: "${item.title}" (${item.year}) bởi tác giả/nghệ sĩ "${item.author || 'Chưa rõ'}". Thể loại: ${item.genre}. Mô tả: ${item.description}`).join('\n')
+    : '';
+
   const systemInstruction = `Bạn là trợ lý AI chuyên gia giải trí Việt Nam của 2HT ENTERTAINMENT. Nhiệm vụ của bạn là giải đáp và tư vấn chi tiết, hấp dẫn về mọi câu hỏi liên quan đến: âm nhạc Việt Nam (bài hát hot, ca sĩ, ban nhạc, nhạc sĩ, liveshow), phim ảnh Việt Nam (phim truyền hình, phim điện ảnh chiếu rạp, phim bom tấn Việt đang được săn đón, đạo diễn, diễn viên). 
-Hãy nói bằng tiếng Việt, có thái độ thân thiện, nhiệt tình và sử dụng các câu trả lời sinh động. Nếu người dùng hỏi những câu hỏi ngoài chủ đề giải trí Việt Nam, hãy lịch sự từ chối và hướng họ quay lại chủ đề phim ảnh và âm nhạc Việt.`;
+Hãy nói bằng tiếng Việt, có thái độ thân thiện, nhiệt tình và sử dụng các câu trả lời sinh động. Nếu người dùng hỏi những câu hỏi ngoài chủ đề giải trí Việt Nam, hãy lịch sự từ chối và hướng họ quay lại chủ đề phim ảnh và âm nhạc Việt.
+Thời gian hiện tại là năm 2026. Hãy luôn ưu tiên trả lời dựa trên thông tin thực tế của các tác phẩm đang hiển thị trên trang chủ bên dưới:
+${mediaContext}`;
 
   const contents = [
     ...history.map(item => ({

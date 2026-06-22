@@ -355,7 +355,7 @@ function App() {
     setChatMessages(newMessages);
 
     try {
-      const reply = await askGeminiChat(userMessage, chatMessages, geminiApiKey);
+      const reply = await askGeminiChat(userMessage, chatMessages, geminiApiKey, mediaList);
       setChatMessages([...newMessages, { role: 'assistant', content: reply }]);
     } catch (err) {
       setChatMessages([...newMessages, { role: 'assistant', content: `⚠️ Lỗi: ${err.message || 'Không thể kết nối tới trợ lý AI.'}` }]);
