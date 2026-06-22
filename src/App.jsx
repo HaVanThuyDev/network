@@ -242,8 +242,9 @@ function App() {
   };
 
   const handleUpdateFromAi = async () => {
-    if (!geminiApiKey.trim()) {
-      setAiError('Vui lòng nhập API Key.');
+    const keyToUse = geminiApiKey || import.meta.env.VITE_GEMINI_API_KEY;
+    if (!keyToUse || !keyToUse.trim()) {
+      setAiError('Không tìm thấy Gemini API Key cấu hình trong dự án.');
       return;
     }
     setIsFetchingAi(true);
@@ -251,7 +252,7 @@ function App() {
     setAiSuccess(false);
 
     try {
-      const data = await fetchWeeklyMediaFromGemini(geminiApiKey);
+      const data = await fetchWeeklyMediaFromGemini(keyToUse);
       const cleanData = sanitizeAndDeduplicateMediaList(data);
       if (!validateGeminiData(cleanData)) {
         throw new Error("Dữ liệu từ AI chưa đầy đủ hoặc không đúng danh mục hiển thị chuẩn. Đang thử lại sau.");
@@ -522,7 +523,7 @@ function App() {
                     <iframe
                       key={playingItem.id}
                       className="w-full h-full object-contain aspect-video"
-                      src={`https://www.youtube-nocookie.com/embed/${getYoutubeId(playingItem.videoUrl)}?autoplay=1&mute=${isCinemaMuted ? 1 : 0}&playlist=${getYoutubeId(playingItem.videoUrl)}&loop=1&controls=1&modestbranding=1&rel=0&showinfo=0&enablejsapi=1`}
+                      src={`https://www.youtube-nocookie.com/embed/${getYoutubeId(playingItem.videoUrl)}?autoplay=1&mute=${isCinemaMuted ? 1 : 0}&playlist=${getYoutubeId(playingItem.videoUrl)}&loop=1&controls=1&modestbranding=1&rel=0&showinfo=0&enablejsapi=1&playsinline=1`}
                       title={playingItem.title}
                       frameBorder="0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -617,22 +618,8 @@ function App() {
 
                   <div className="space-y-4">
                     <p className="text-xs text-textSecondary leading-relaxed">
-                      Nhập **Google Gemini API Key** của bạn để tự động cập nhật danh sách phim ảnh, âm nhạc và trò chơi hot nhất tuần từ AI.
+                      Nhấn nút dưới đây để cập nhật danh sách phim ảnh, âm nhạc và trò chơi hot nhất tuần tự động thông qua trí tuệ nhân tạo Gemini AI.
                     </p>
-
-                    <div>
-                      <label className="text-[10px] uppercase font-bold tracking-wider text-textSecondary block mb-1">
-                        Gemini API Key
-                      </label>
-                      <input
-                        type="password"
-                        placeholder="Nhập API Key (AIzaSy...)"
-                        value={geminiApiKey}
-                        onChange={(e) => setGeminiApiKey(e.target.value)}
-                        disabled={isFetchingAi}
-                        className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder:text-white/20 outline-none focus:border-primary transition-colors"
-                      />
-                    </div>
 
                     {aiError && (
                       <p className="text-xs text-red-500 bg-red-500/10 border border-red-500/20 p-2.5 rounded-lg">
