@@ -132,7 +132,7 @@ function App() {
   // AI Settings Modal States
   const [isAiModalOpen, setIsAiModalOpen] = useState(false);
   const [geminiApiKey, setGeminiApiKey] = useState(() => {
-    return localStorage.getItem('gemini_api_key') || '';
+    return localStorage.getItem('gemini_api_key') || import.meta.env.VITE_GEMINI_API_KEY || '';
   });
   const [isFetchingAi, setIsFetchingAi] = useState(false);
   const [aiError, setAiError] = useState('');
